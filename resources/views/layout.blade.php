@@ -27,11 +27,27 @@
     <div class="sidebar">
         <div class="sidebar-brand">EntregaYa</div>
         <ul class="sidebar-menu">
-            <li class="sidebar-item"><a href="/dashboard">📊 Dashboard</a></li>
-            <li class="sidebar-item"><a href="/flotilla">🚚 Gestión de Flotilla</a></li>
-            <li class="sidebar-item"><a href="/asignacion">🗺️ Asignación de Rutas</a></li>
-            <li class="sidebar-item"><a href="/historial">⚠️ Historial Reportes</a></li>
+            @if(Auth::user()->rol === 'admin')
+                <li class="sidebar-item"><a href="/dashboard">📊 Dashboard</a></li>
+                <li class="sidebar-item"><a href="/flotilla">🚚 Gestión de Flotilla</a></li>
+                <li class="sidebar-item"><a href="/asignacion">🗺️ Asignación de Rutas</a></li>
+                <li class="sidebar-item"><a href="/historial">⚠️ Historial Reportes</a></li>
+            @endif
+
+            @if(Auth::user()->rol === 'conductor')
+                <li class="sidebar-item"><a href="#">📦 Mis Entregas</a></li>
+                <li class="sidebar-item"><a href="#">📍 Mi Ruta Activa</a></li>
+            @endif
         </ul>
+
+        <div style="margin-top: auto; padding: 20px;">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" style="width: 100%; padding: 10px; background-color: #ef4444; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">
+                    🚪 Cerrar Sesión
+                </button>
+            </form>
+        </div>
     </div>
 
     <div class="main-content">

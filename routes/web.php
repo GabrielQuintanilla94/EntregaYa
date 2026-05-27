@@ -2,15 +2,34 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VehiculoController;
+use App\Http\Controllers\AuthController;
 
-Route::get('/', function () {
-    return view('welcome');
+// =========================================================
+// 1. RUTAS PÚBLICAS (Afuera de la protección)
+// =========================================================
+Route::get('/', function () { return view('welcome'); });
+
+// Rutas para ver el formulario y procesar el inicio de sesión
+Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+
+
+// =========================================================
+// 2. RUTAS PROTEGIDAS (Adentro del middleware auth)
+// =========================================================
+Route::middleware('auth')->group(function () {
+    
+    // Vistas principales
+    Route::get('/dashboard', function () { return view('dashboard'); });
+    Route::get('/asignacion', function () { return view('asignacion'); });
+    Route::get('/historial', function () { return view('historial'); });
+    
+    // CRUD de Vehículos
+    Route::get('/flotilla', [VehiculoController::class, 'index']);
+    Route::get('/flotilla/crear', [VehiculoController::class, 'create']);
+    Route::post('/flotilla', [VehiculoController::class, 'store']);
+    
+    // Ruta para cerrar sesión (solo puedes salir si ya entraste)
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 });
-
-
-Route::get('/flotilla', [VehiculoController::class, 'index']);
-Route::get('/flotilla/crear', [VehiculoController::class, 'create']); 
-Route::post('/flotilla', [VehiculoController::class, 'store']); 
-Route::get('/dashboard', function () { return view('dashboard'); });
-Route::get('/asignacion', function () { return view('asignacion'); });
-Route::get('/historial', function () { return view('historial'); });
