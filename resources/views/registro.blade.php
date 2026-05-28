@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - EntregaYa</title>
+    <title>Registro - EntregaYa</title>
     <style>
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -11,16 +11,18 @@
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            height: 100vh; 
+            min-height: 100vh; 
             margin: 0; 
+            padding: 20px;
+            box-sizing: border-box;
         }
-        .login-box { 
+        .register-box { 
             background: white; 
             padding: 40px; 
             border-radius: 12px; 
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); 
             width: 100%; 
-            max-width: 400px; 
+            max-width: 450px; 
         }
         h2 { 
             text-align: center; 
@@ -61,7 +63,7 @@
         button { 
             width: 100%; 
             padding: 12px; 
-            background-color: #2563eb; 
+            background-color: #10b981; /* Un color verde para diferenciar el registro del login */
             color: white; 
             border: none; 
             border-radius: 6px; 
@@ -72,7 +74,7 @@
             margin-top: 10px;
         }
         button:hover { 
-            background-color: #1d4ed8; 
+            background-color: #059669; 
         }
         .error { 
             background-color: #fee2e2; 
@@ -81,22 +83,25 @@
             border-radius: 6px; 
             font-size: 14px; 
             margin-bottom: 20px; 
-            text-align: center; 
             border: 1px solid #f87171; 
         }
-        .register-link {
+        .error ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .login-link {
             text-align: center;
             margin-top: 25px;
             font-size: 14px;
             color: #6b7280;
         }
-        .register-link a {
+        .login-link a {
             color: #2563eb;
             text-decoration: none;
             font-weight: 600;
             transition: color 0.3s;
         }
-        .register-link a:hover {
+        .login-link a:hover {
             color: #1d4ed8;
             text-decoration: underline;
         }
@@ -104,31 +109,42 @@
 </head>
 <body>
 
-    <div class="login-box">
-        <h2>📦 EntregaYa</h2>
-        <p class="subtitle">Inicia sesión en tu cuenta</p>
+    <div class="register-box">
+        <h2>Crear Cuenta</h2>
+        <p class="subtitle">Únete al equipo de EntregaYa</p>
 
-        @if($errors->any())
-            <div class="error">{{ $errors->first() }}</div>
+        @if ($errors->any())
+            <div class="error">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
         @endif
 
-        <form action="/login" method="POST">
+        <form action="/registro" method="POST">
             @csrf
             <div class="form-group">
+                <label for="name">Nombre Completo</label>
+                <input type="text" id="name" name="name" value="{{ old('name') }}" required placeholder="Ej. Juan Pérez">
+            </div>
+
+            <div class="form-group">
                 <label for="email">Correo Electrónico</label>
-                <input type="email" id="email" name="email" required placeholder="ejemplo@entregaya.com">
+                <input type="email" id="email" name="email" value="{{ old('email') }}" required placeholder="ejemplo@entregaya.com">
             </div>
 
             <div class="form-group">
                 <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" required placeholder="••••••••">
+                <input type="password" id="password" name="password" required placeholder="Mínimo 6 caracteres">
             </div>
 
-            <button type="submit">Ingresar</button>
+            <button type="submit">Registrarse</button>
         </form>
 
-        <div class="register-link">
-            ¿No tienes una cuenta? <a href="/registro">Regístrate aquí</a>
+        <div class="login-link">
+            ¿Ya tienes una cuenta? <a href="/login">Inicia sesión aquí</a>
         </div>
     </div>
 

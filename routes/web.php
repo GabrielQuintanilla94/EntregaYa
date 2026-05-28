@@ -7,12 +7,17 @@ use App\Http\Controllers\AuthController;
 // =========================================================
 // 1. RUTAS PÚBLICAS (Afuera de la protección)
 // =========================================================
-Route::get('/', function () { return view('welcome'); });
+Route::get('/', function () { 
+    return redirect('/login'); 
+});
 
 // Rutas para ver el formulario y procesar el inicio de sesión
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
+// Rutas para ver el formulario y procesar el registro
+Route::get('/registro', [AuthController::class, 'create'])->name('registro');
+Route::post('/registro', [AuthController::class, 'register']);
 
 // =========================================================
 // 2. RUTAS PROTEGIDAS (Adentro del middleware auth)
