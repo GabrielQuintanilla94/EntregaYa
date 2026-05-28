@@ -3,33 +3,55 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ConductorController;
+use App\Http\Controllers\AsignacionController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HistorialController;
 
 // =========================================================
 // 1. RUTAS PÚBLICAS (Afuera de la protección)
 // =========================================================
-Route::get('/', function () { return view('welcome'); });
+Route::get('/', function () { 
+    return redirect('/login'); 
+});
 
 // Rutas para ver el formulario y procesar el inicio de sesión
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
+// Rutas para ver el formulario y procesar el registro
+Route::get('/registro', [AuthController::class, 'create'])->name('registro');
+Route::post('/registro', [AuthController::class, 'register']);
 
 // =========================================================
 // 2. RUTAS PROTEGIDAS (Adentro del middleware auth)
 // =========================================================
-Route::middleware('auth')->group(function () {
-    
-    // Vistas principales
-    Route::get('/dashboard', function () { return view('dashboard'); });
-    Route::get('/asignacion', function () { return view('asignacion'); });
-    Route::get('/historial', function () { return view('historial'); });
+
+// Ruta general para todos los logueados
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// ZONA VIP: SOLO ADMINISTRADORES
+Route::middleware(['auth', 'role:admin'])->group(function () {
+   // Dashboard y Historial
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/historial', [HistorialController::class, 'index']);
+    // Sistema de Asignación de Rutas
+Route::get('/asignacion', [AsignacionController::class, 'index']);
+Route::post('/asignacion', [AsignacionController::class, 'store']);
+   
     
     // CRUD de Vehículos
     Route::get('/flotilla', [VehiculoController::class, 'index']);
     Route::get('/flotilla/crear', [VehiculoController::class, 'create']);
     Route::post('/flotilla', [VehiculoController::class, 'store']);
-    
-    // Ruta para cerrar sesión (solo puedes salir si ya entraste)
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    // Vista de Conductores
+    Route::get('/conductores', [ConductorController::class, 'index']);
+});
 
+// ZONA VIP: SOLO CONDUCTORES
+Route::middleware(['auth', 'role:conductor'])->group(function () {
+    // Aquí pondremos las vistas del conductor más adelante
+    Route::get('/mis-entregas', function () { 
+        return "Bienvenido Conductor. Aquí verás tus paquetes pronto."; 
+    });
 });

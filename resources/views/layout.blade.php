@@ -29,7 +29,7 @@
         <ul class="sidebar-menu">
             @if(Auth::user()->rol === 'admin')
                 <li class="sidebar-item"><a href="/dashboard">📊 Dashboard</a></li>
-                <li class="sidebar-item"><a href="/flotilla">🚚 Gestión de Flotilla</a></li>
+                <li class="sidebar-item"><a href="/conductores">👥 Conductores</a></li> <li class="sidebar-item"><a href="/flotilla">🚚 Gestión de Flotilla</a></li>
                 <li class="sidebar-item"><a href="/asignacion">🗺️ Asignación de Rutas</a></li>
                 <li class="sidebar-item"><a href="/historial">⚠️ Historial Reportes</a></li>
             @endif
