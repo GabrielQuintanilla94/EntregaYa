@@ -15,7 +15,7 @@ class AuthController extends Controller
         return view('login');
     }
 
-    // Procesar el formulario
+    // Procesar el formulario de Login
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -48,7 +48,6 @@ class AuthController extends Controller
         return redirect('/login');
     }
 
-
     // Mostrar la pantalla de Registro
     public function create()
     {
@@ -58,25 +57,30 @@ class AuthController extends Controller
     // Procesar el registro y guardar en base de datos
     public function register(Request $request)
     {
-        // 1. Validar que nos envíen todos los datos correctamente
+        // 1. Validar que nos envíen todos los datos correctamente (incluyendo el nuevo rol)
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
+            'rol' => 'required|in:admin,conductor', // <-- Validamos que seleccione una opción válida
         ]);
 
         // 2. Crear al usuario
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password), // Encriptamos la contraseña por seguridad
-            'rol' => 'conductor' // Le asignamos este rol por defecto basado en tu lógica actual
+            'password' => Hash::make($request->password), // Encriptamos la contraseña
+            'rol' => $request->rol // <-- Guardamos la elección del formulario
         ]);
 
         // 3. Iniciar sesión automáticamente después de registrarse
         Auth::login($user);
 
-        // 4. Redirigir a su panel correspondiente
-        return redirect('/mis-entregas'); 
+        // 4. Redirigir a su panel correspondiente según el rol elegido
+        if ($user->rol === 'admin') {
+            return redirect('/dashboard');
+        } else {
+            return redirect('/mis-entregas'); 
+        }
     }
 }

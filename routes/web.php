@@ -36,8 +36,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/historial', [HistorialController::class, 'index']);
     // Sistema de Asignación de Rutas
-Route::get('/asignacion', [AsignacionController::class, 'index']);
-Route::post('/asignacion', [AsignacionController::class, 'store']);
+    Route::get('/asignacion', [AsignacionController::class, 'index']);
+    Route::post('/asignacion', [AsignacionController::class, 'store']);
    
     
     // CRUD de Vehículos
@@ -50,8 +50,20 @@ Route::post('/asignacion', [AsignacionController::class, 'store']);
 
 // ZONA VIP: SOLO CONDUCTORES
 Route::middleware(['auth', 'role:conductor'])->group(function () {
-    // Aquí pondremos las vistas del conductor más adelante
+    
+    // Vista principal del conductor (Maquetada por ti)
     Route::get('/mis-entregas', function () { 
-        return "Bienvenido Conductor. Aquí verás tus paquetes pronto."; 
+        return view('mis-entregas'); 
     });
+
+    // =========================================================
+    // Aquí se agregarán las rutas de mapa, escáner o estados.
+    // Ej: Route::post('/mis-entregas/confirmar', [EntregaController::class, 'update']);
+    // =========================================================
+
+});
+
+// Ruta temporal para ver el diseño
+Route::get('/maqueta', function () {
+    return view('welcome');
 });

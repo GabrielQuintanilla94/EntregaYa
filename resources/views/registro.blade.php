@@ -46,7 +46,8 @@
             color: #374151; 
             font-size: 14px;
         }
-        input { 
+        /* Se agregó 'select' para que comparta el mismo diseño que los inputs */
+        input, select { 
             width: 100%; 
             padding: 12px; 
             border: 1px solid #d1d5db; 
@@ -54,8 +55,9 @@
             box-sizing: border-box; 
             font-size: 15px; 
             transition: all 0.3s ease; 
+            background-color: white;
         }
-        input:focus { 
+        input:focus, select:focus { 
             outline: none; 
             border-color: #2563eb; 
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); 
@@ -63,7 +65,7 @@
         button { 
             width: 100%; 
             padding: 12px; 
-            background-color: #10b981; /* Un color verde para diferenciar el registro del login */
+            background-color: #10b981; 
             color: white; 
             border: none; 
             border-radius: 6px; 
@@ -138,6 +140,15 @@
             <div class="form-group">
                 <label for="password">Contraseña</label>
                 <input type="password" id="password" name="password" required placeholder="Mínimo 6 caracteres">
+            </div>
+
+            <div class="form-group">
+                <label for="rol">Tipo de Cuenta</label>
+                <select id="rol" name="rol" required>
+                    <option value="" disabled selected>Selecciona un rol...</option>
+                    <option value="conductor">Conductor (Repartidor)</option>
+                    <option value="admin">Administrador (Despachador)</option>
+                </select>
             </div>
 
             <button type="submit">Registrarse</button>
