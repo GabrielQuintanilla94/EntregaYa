@@ -52,9 +52,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:conductor'])->group(function () {
     
     // Vista principal del conductor
-    Route::get('/mis-entregas', function () { 
-        return view('mis-entregas'); 
-    });
+    Route::get('/mis-entregas', [ConductorController::class, 'misEntregas'])->name('conductor.entregas');
 
     // NUEVA RUTA PARA "MI RUTA" (Mapa)
     Route::get('/mi-ruta', [ConductorController::class, 'miRuta'])->name('conductor.ruta');
@@ -62,6 +60,10 @@ Route::middleware(['auth', 'role:conductor'])->group(function () {
     Route::get('/mi-historial', [ConductorController::class, 'historial'])->name('conductor.historial');
     // NUEVA RUTA PARA EL FORMULARIO DE INCIDENCIAS
     Route::get('/reportar-incidencia', [ConductorController::class, 'reportarIncidencia'])->name('conductor.incidencia');
+    // RUTAS PARA DETALLES Y COMPLETAR ENTREGA
+    Route::get('/mis-entregas/{id}', [ConductorController::class, 'detalleEntrega'])->name('conductor.detalle');
+    Route::post('/mis-entregas/{id}/completar', [ConductorController::class, 'completarEntrega'])->name('conductor.completar');
+   
     // =========================================================
     // Aquí se agregarán las rutas de mapa, escáner o estados.
     // Ej: Route::post('/mis-entregas/confirmar', [EntregaController::class, 'update']);
