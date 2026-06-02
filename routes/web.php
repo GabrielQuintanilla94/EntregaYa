@@ -51,18 +51,23 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 // ZONA VIP: SOLO CONDUCTORES
 Route::middleware(['auth', 'role:conductor'])->group(function () {
     
-    // Vista principal del conductor (Maquetada por ti)
+    // Vista principal del conductor
     Route::get('/mis-entregas', function () { 
         return view('mis-entregas'); 
     });
 
+    // NUEVA RUTA PARA "MI RUTA" (Mapa)
+    Route::get('/mi-ruta', [ConductorController::class, 'miRuta'])->name('conductor.ruta');
+    // NUEVA RUTA PARA EL HISTORIAL DEL CONDUCTOR
+    Route::get('/mi-historial', [ConductorController::class, 'historial'])->name('conductor.historial');
+    // NUEVA RUTA PARA EL FORMULARIO DE INCIDENCIAS
+    Route::get('/reportar-incidencia', [ConductorController::class, 'reportarIncidencia'])->name('conductor.incidencia');
     // =========================================================
     // Aquí se agregarán las rutas de mapa, escáner o estados.
     // Ej: Route::post('/mis-entregas/confirmar', [EntregaController::class, 'update']);
     // =========================================================
 
 });
-
 // Ruta temporal para ver el diseño
 Route::get('/maqueta', function () {
     return view('welcome');

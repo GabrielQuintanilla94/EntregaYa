@@ -26,18 +26,26 @@
             <div class="p-4">
                 <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Navegación</p>
                 <nav class="space-y-1">
-                    <a href="#" class="flex items-center px-4 py-3 text-gray-700 bg-gray-100 font-medium rounded-lg transition">
-                        <span>🏠 Inicio</span>
+                    <nav class="space-y-1">
+                    <a href="{{ url('/mis-entregas') }}" 
+                       class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('mis-entregas') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
+                        <span>🏠 Inicio (Mis Entregas)</span>
                     </a>
-                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition">
+                    
+                    <a href="{{ url('/mi-ruta') }}" 
+                       class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('mi-ruta') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
                         <span>🗺️ Mis Rutas</span>
                     </a>
-                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition">
+                    
+                    <a href="{{ url('/mi-historial') }}" 
+                       class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('mi-historial') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
                         <span>📜 Historial de Entregas</span>
                     </a>
-                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition">
-                        <span>⚠️ Reportar Incidencia</span>
+                    
+                    <a href="{{ url('/reportar-incidencia') }}" 
+class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('reportar-incidencia') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">                        <span>⚠️ Reportar Incidencia</span>
                     </a>
+                </nav>
                 </nav>
             </div>
 
