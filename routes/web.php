@@ -60,6 +60,8 @@ Route::middleware(['auth', 'role:conductor'])->group(function () {
     Route::get('/mi-historial', [ConductorController::class, 'historial'])->name('conductor.historial');
     // NUEVA RUTA PARA EL FORMULARIO DE INCIDENCIAS
     Route::get('/reportar-incidencia', [ConductorController::class, 'reportarIncidencia'])->name('conductor.incidencia');
+    // NUEVA RUTA: Para recibir el formulario cuando le das a "Enviar"
+    Route::post('/reportar-incidencia', [ConductorController::class, 'guardarIncidencia']);
     // RUTAS PARA DETALLES Y COMPLETAR ENTREGA
     Route::get('/mis-entregas/{id}', [ConductorController::class, 'detalleEntrega'])->name('conductor.detalle');
     Route::post('/mis-entregas/{id}/completar', [ConductorController::class, 'completarEntrega'])->name('conductor.completar');

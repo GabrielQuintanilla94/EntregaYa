@@ -14,8 +14,9 @@ class AsignacionController extends Controller
         // 1. Buscamos a los conductores disponibles
         $conductores = User::where('rol', 'conductor')->get();
         
-        // 2. Buscamos SOLO los vehículos que estén "Disponible"
-        $vehiculos = Vehiculo::where('estado', 'Disponible')->get();
+        // 2. Traemos TODOS los vehículos para poder asignarles paquetes ilimitados
+        // (Si tuvieras un estado 'En mantenimiento', podrías usar: where('estado', '!=', 'En mantenimiento'))
+        $vehiculos = Vehiculo::all();
         
         // 3. Traemos las entregas que ya existen para mostrarlas en una tabla
         $entregas = Entrega::with(['conductor', 'vehiculo'])->latest()->get();
@@ -42,12 +43,10 @@ class AsignacionController extends Controller
             'estado' => 'Pendiente' // Por defecto empieza en pendiente
         ]);
 
-        // 3. (Opcional pero recomendado) Cambiamos el estado del vehículo a "En ruta"
-        $vehiculo = Vehiculo::find($request->vehiculo_id);
-        $vehiculo->estado = 'En ruta';
-        $vehiculo->save();
+        // NOTA: Se eliminó el bloque que cambiaba el estado del vehículo a "En ruta" 
+        // para permitir asignaciones ilimitadas al mismo vehículo.
 
-        // 4. Regresamos a la pantalla con un mensaje de éxito
-        return redirect('/asignacion')->with('success', 'Paquete asignado correctamente al conductor.');
+        // 3. Regresamos a la pantalla con un mensaje de éxito
+        return redirect('/asignacion')->with('success', 'Paquete asignado correctamente al conductor y vehículo.');
     }
 }

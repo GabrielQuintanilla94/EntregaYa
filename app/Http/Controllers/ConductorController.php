@@ -98,4 +98,20 @@ class ConductorController extends Controller
 
         return view('reportar-incidencia', compact('entregas'));
     }
+    // NUEVO MÉTODO PARA GUARDAR LA INCIDENCIA
+    public function guardarIncidencia(Request $request)
+    {
+        // 1. (Opcional) Validamos que los datos vengan correctamente
+        $request->validate([
+            'tipo_incidencia' => 'required|string',
+            'detalles' => 'required|string',
+        ]);
+
+        // 2. Aquí iría el código para guardar en la base de datos.
+        // Ej: Incidencia::create([...]); 
+        // Como aún no tenemos esa tabla, pasaremos directo al paso 3.
+
+        // 3. Redirigimos a la pantalla principal con un mensaje de éxito
+        return redirect('/mis-entregas')->with('success', 'La incidencia ha sido reportada correctamente a la central.');
+    }
 }

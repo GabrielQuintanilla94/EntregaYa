@@ -16,6 +16,8 @@
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <form action="#" method="POST" class="p-8">
+
+        <form action="{{ url('/reportar-incidencia') }}" method="POST" class="p-8">
             @csrf
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -55,11 +57,10 @@
                 <a href="{{ url('/mis-entregas') }}" class="text-gray-500 hover:text-gray-700 font-medium px-4 py-2 transition">
                     Cancelar
                 </a>
-                <button type="button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-                    Enviar Reporte
-                </button>
-            </div>
+                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                 Enviar Reporte
+               </button>     </div>
         </form>
     </div>
 </div>
