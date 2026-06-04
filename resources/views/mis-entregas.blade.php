@@ -1,75 +1,70 @@
-@extends('layout')
+@extends('layouts.app')
+
+@section('title', 'Mis Entregas - EntregaYa')
 
 @section('content')
-<style>
-    .page-title { font-size: 24px; font-weight: 800; color: #111827; margin-bottom: 5px; }
-    .mobile-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 20px; }
-    
-    .delivery-card { 
-        background: white; 
-        padding: 20px; 
-        border-radius: 12px; 
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); 
-        border: 1px solid #E5E7EB; 
-        border-left: 5px solid #F59E0B; /* Amarillo por defecto (Pendiente) */
-    }
-    .delivery-card.en-camino { border-left-color: #3B82F6; /* Azul para en camino */ }
-    
-    .delivery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-    .status-pendiente { background: #FEF3C7; color: #92400E; }
-    .status-encamino { background: #DBEAFE; color: #1E40AF; }
-    
-    .delivery-info h3 { margin: 0 0 5px 0; color: #111827; font-size: 18px; }
-    .delivery-info p { margin: 0 0 10px 0; color: #6B7280; font-size: 14px; }
-    
-    .btn-action { 
-        display: block; 
-        width: 100%; 
-        text-align: center; 
-        background: #111827; 
-        color: white; 
-        padding: 12px; 
-        border-radius: 8px; 
-        text-decoration: none; 
-        font-weight: bold; 
-        margin-top: 15px;
-    }
-    .btn-action:hover { background: #374151; }
-    .empty-state { text-align: center; padding: 40px; color: #6B7280; background: white; border-radius: 12px; }
-</style>
-
-<div>
-    <h1 class="page-title">Mis Entregas Hoy</h1>
-    <p style="color: #6B7280;">Revisa tu ruta y marca los paquetes entregados.</p>
+<div class="mb-6">
+    <h1 class="text-3xl font-bold text-gray-800">Panel de Conductor</h1>
+    <p class="text-gray-500">Resumen de tu jornada y paquetes asignados.</p>
 </div>
 
-<div class="mobile-grid">
-    @forelse($entregas as $entrega)
-        <div class="delivery-card {{ $entrega->estado == 'En camino' ? 'en-camino' : '' }}">
-            <div class="delivery-header">
-                <span style="font-size: 12px; color: #6B7280;">ID: #{{ $entrega->id }}</span>
-                @if($entrega->estado == 'Pendiente')
-                    <span class="status-badge status-pendiente">Pendiente</span>
-                @else
-                    <span class="status-badge status-encamino">En Camino</span>
-                @endif
-            </div>
-            
-            <div class="delivery-info">
-                <h3>{{ $entrega->descripcion }}</h3>
-                <p>📍 {{ $entrega->direccion }}</p>
-                <p>🚚 Vehículo asignado: <strong>{{ $entrega->vehiculo->placa }}</strong></p>
-            </div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center space-x-4 hover:shadow-md transition">
+        <div class="p-3 bg-blue-100 text-blue-600 rounded-full">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+        </div>
+        <div>
+            <p class="text-sm font-medium text-gray-500">Entregas Pendientes</p>
+            <h3 class="text-2xl font-bold text-gray-800">{{ $entregas->count() }}</h3>
+        </div>
+    </div>
 
-            <!-- Este botón nos llevará a la vista de detalles más adelante -->
-            <a href="{{ route('conductor.detalle', $entrega->id) }}" class="btn-action">Ver Detalles / Actualizar</a>
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center space-x-4 hover:shadow-md transition">
+        <div class="p-3 bg-green-100 text-green-600 rounded-full">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
         </div>
-    @empty
-        <div class="empty-state">
-            <h2>🎉 ¡Todo limpio!</h2>
-            <p>No tienes entregas pendientes en este momento. Tómate un descanso.</p>
+        <div>
+            <p class="text-sm font-medium text-gray-500">Entregas Completadas</p>
+            <h3 class="text-2xl font-bold text-gray-800">{{ $entregasCompletadas }}</h3>
         </div>
-    @endforelse
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center space-x-4 hover:shadow-md transition">
+        <div class="p-3 bg-red-100 text-red-600 rounded-full">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <div>
+            <p class="text-sm font-medium text-gray-500">Mis Incidencias</p>
+            <h3 class="text-2xl font-bold text-gray-800">{{ $incidenciasCount }}</h3>
+        </div>
+    </div>
+</div>
+
+<div class="space-y-4">
+    <h2 class="text-xl font-semibold text-gray-700 border-b pb-2">Paquetes Asignados</h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        @forelse($entregas as $entrega)
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col justify-between hover:shadow-md transition">
+                <div>
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">Guía #{{ $entrega->id }}</span>
+                        <span class="text-xs font-semibold px-2 py-1 rounded {{ $entrega->estado == 'En camino' ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 text-yellow-700' }}">
+                            {{ $entrega->estado }}
+                        </span>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-lg">📍 {{ $entrega->direccion }}</h3>
+                    <p class="text-sm text-gray-500 mt-1 mb-4">📦 {{ $entrega->descripcion }}</p>
+                </div>
+                <a href="{{ route('conductor.detalle', $entrega->id) }}" class="text-center bg-[#5c3d2e] hover:bg-[#4a3125] text-white px-4 py-2 rounded-lg text-sm font-medium transition w-full">
+                    Ver Detalles / Entregar
+                </a>
+            </div>
+        @empty
+            <div class="col-span-1 lg:col-span-2 bg-gray-50 p-8 rounded-xl text-center border-2 border-dashed border-gray-300">
+                <p class="text-gray-500">No tienes paquetes pendientes asignados para hoy. ¡A descansar!</p>
+            </div>
+        @endforelse
+    </div>
 </div>
 @endsection
