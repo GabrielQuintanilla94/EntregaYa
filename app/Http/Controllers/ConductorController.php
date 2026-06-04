@@ -23,15 +23,16 @@ class ConductorController extends Controller
     // MÉTODOS DEL CONDUCTOR
     // ==========================================
 
-    // NUEVO MÉTODO PARA "MIS ENTREGAS" (Página de Inicio)
+   // NUEVO MÉTODO PARA "MIS ENTREGAS" (Página de Inicio)
     public function misEntregas()
     {
         $conductor_id = Auth::id();
 
-        // 1. Traemos los paquetes pendientes o en camino
-        $entregasPendientes = Entrega::where('conductor_id', $conductor_id)
-                                     ->whereIn('estado', ['Pendiente', 'En camino'])
-                                     ->get();
+        // 1. CAMBIO AQUÍ: Renombramos a $entregas y agregamos ->with('vehiculo')
+        $entregas = Entrega::with('vehiculo')
+                           ->where('conductor_id', $conductor_id)
+                           ->whereIn('estado', ['Pendiente', 'En camino'])
+                           ->get();
 
         // 2. Contamos cuántos ya entregó para la estadística
         $entregasCompletadas = Entrega::where('conductor_id', $conductor_id)
@@ -41,7 +42,8 @@ class ConductorController extends Controller
         // (Opcional) Si más adelante creas tabla de incidencias, aquí las cuentas
         $incidenciasCount = 0;
 
-        return view('mis-entregas', compact('entregasPendientes', 'entregasCompletadas', 'incidenciasCount'));
+        // 3. CAMBIO AQUÍ: Pasamos 'entregas' al compact
+        return view('mis-entregas', compact('entregas', 'entregasCompletadas', 'incidenciasCount'));
     }
 
     // MÉTODO PARA VER LOS DETALLES DE UN PAQUETE
