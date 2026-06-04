@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Entrega; // Importamos el modelo Entrega
 use Illuminate\Support\Facades\Auth; // Importamos Auth para saber quién inició sesión
+use App\Models\Incidencia;
 
 class ConductorController extends Controller
 {
@@ -41,17 +42,14 @@ class ConductorController extends Controller
                            ->whereIn('estado', ['Pendiente', 'En camino'])
                            ->get();
 
-        // 2. Paquetes entregados
+      // 2. Contamos cuántos ya entregó para la estadística
         $entregasCompletadas = Entrega::where('conductor_id', $conductor_id)
                                       ->where('estado', 'Entregado')
                                       ->count();
 
-        // 3. ¡AQUÍ ESTÁ EL CAMBIO! Contamos las incidencias reales (estado 'Reportado')
-        $incidenciasCount = Entrega::where('conductor_id', $conductor_id)
-                                   ->where('estado', 'Reportado')
-                                   ->count();
+        // 3. CAMBIO: Ahora sí contamos las incidencias reales de este conductor
+        $incidenciasCount = Incidencia::where('conductor_id', $conductor_id)->count();
 
-        // Pasamos las tres variables a la vista
         return view('mis-entregas', compact('entregas', 'entregasCompletadas', 'incidenciasCount'));
     }
 
@@ -109,28 +107,24 @@ class ConductorController extends Controller
 
         return view('reportar-incidencia', compact('entregas'));
     }
-    public function guardarIncidencia(Request $request)
+   public function guardarIncidencia(Request $request)
     {
-        // 1. Validamos que los datos vengan correctamente
+        // 1. Validamos que la información venga correcta
         $request->validate([
             'tipo_incidencia' => 'required|string',
             'detalles' => 'required|string',
-            'entrega_id' => 'required' 
+            'entrega_id' => 'nullable|exists:entregas,id'
         ]);
 
-        // 2. Si la incidencia está asociada a un paquete
-        if ($request->entrega_id !== 'general') {
-            
-            // ¡AQUÍ ESTÁ EL CAMBIO! Usamos solo "Entrega::" en lugar de "App\Models\Entrega::"
-            $entrega = Entrega::where('conductor_id', Auth::id())
-                              ->findOrFail($request->entrega_id);
-            
-            // Cambiamos el estado y guardamos
-            $entrega->estado = 'Reportado';
-            $entrega->save();
-        }
+        // 2. Creamos el registro en la base de datos
+        Incidencia::create([
+            'conductor_id' => Auth::id(),
+            'entrega_id' => $request->entrega_id,
+            'tipo_incidencia' => $request->tipo_incidencia,
+            'detalles' => $request->detalles
+        ]);
 
-        // 3. Redirigimos a la pantalla principal
-        return redirect('/mis-entregas')->with('success', 'La incidencia ha sido reportada y el estado del paquete ha sido actualizado.');
+        // 3. Redirigimos al inicio con éxito
+        return redirect('/mis-entregas')->with('success', '⚠️ Tu incidencia ha sido reportada a la central.');
     }
 }

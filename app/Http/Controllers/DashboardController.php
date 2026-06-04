@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Vehiculo;
 use App\Models\Entrega;
+use App\Models\Incidencia;
 
 class DashboardController extends Controller
 {
@@ -18,5 +19,13 @@ class DashboardController extends Controller
         $entregasCompletadas = Entrega::where('estado', 'Entregado')->count();
 
         return view('dashboard', compact('totalConductores', 'vehiculosDisponibles', 'entregasActivas', 'entregasCompletadas'));
+    }
+
+
+    public function incidencias()
+    {
+        // Traemos todas las incidencias de la más nueva a la más vieja
+        $incidencias = Incidencia::with(['conductor', 'entrega'])->latest()->get();
+        return view('admin-incidencias', compact('incidencias'));
     }
 }

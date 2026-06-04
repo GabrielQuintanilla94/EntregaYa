@@ -15,7 +15,7 @@
         <div class="flex items-center space-x-4">
             <span class="text-sm bg-[#865c49] px-3 py-1 rounded-full">Panel de Control</span>
             <div class="text-right">
-                <p class="text-sm font-semibold">Usuario Conectado</p>
+                <p class="text-sm font-semibold">{{ Auth::user()->name ?? 'Usuario Conectado' }}</p>
             </div>
         </div>
     </header>
@@ -25,28 +25,26 @@
         <aside class="w-64 bg-white border-r border-gray-200 flex flex-col justify-between shadow-sm">
             <div class="p-4">
                 <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Navegación</p>
+                
                 <nav class="space-y-1">
-                    <nav class="space-y-1">
-                    <a href="{{ url('/mis-entregas') }}" 
-                       class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('mis-entregas') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
-                        <span>🏠 Inicio (Mis Entregas)</span>
-                    </a>
+                    @if(Auth::user()->rol === 'admin')
+                        <!-- Menú del Administrador -->
+                        <a href="{{ url('/dashboard') }}" class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('dashboard') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">📊 Dashboard</a>
+                        <a href="{{ url('/conductores') }}" class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('conductores') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">👥 Conductores</a>
+                        <a href="{{ url('/flotilla') }}" class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('flotilla') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">🚚 Flotilla</a>
+                        <a href="{{ url('/asignacion') }}" class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('asignacion') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">🗺️ Asignación</a>
+                        <a href="{{ url('/historial') }}" class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('historial') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">📜 Historial Entregas</a>
+                        <a href="{{ url('/admin/incidencias') }}" class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('admin/incidencias') ? 'text-red-700 bg-red-50 font-bold' : 'text-red-600 hover:bg-red-50 hover:text-red-800 font-medium' }}">⚠️ Ver Incidencias</a>
                     
-                    <a href="{{ url('/mi-ruta') }}" 
-                       class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('mi-ruta') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
-                        <span>🗺️ Mis Rutas</span>
-                    </a>
-                    
-                    <a href="{{ url('/mi-historial') }}" 
-                       class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('mi-historial') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">
-                        <span>📜 Historial de Entregas</span>
-                    </a>
-                    
-                    <a href="{{ url('/reportar-incidencia') }}" 
-class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('reportar-incidencia') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">                        <span>⚠️ Reportar Incidencia</span>
-                    </a>
+                    @elseif(Auth::user()->rol === 'conductor')
+                        <!-- Menú del Conductor -->
+                        <a href="{{ url('/mis-entregas') }}" class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('mis-entregas') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">🏠 Inicio (Mis Entregas)</a>
+                        <a href="{{ url('/mi-ruta') }}" class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('mi-ruta') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">🗺️ Mis Rutas</a>
+                        <a href="{{ url('/mi-historial') }}" class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('mi-historial') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">📜 Historial de Entregas</a>
+                        <a href="{{ url('/reportar-incidencia') }}" class="flex items-center px-4 py-3 rounded-lg transition {{ request()->is('reportar-incidencia') ? 'text-gray-700 bg-gray-100 font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }}">⚠️ Reportar Incidencia</a>
+                    @endif
                 </nav>
-                </nav>
+
             </div>
 
             <div class="p-4 border-t border-gray-100">

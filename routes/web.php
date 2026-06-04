@@ -33,6 +33,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // ZONA VIP: SOLO ADMINISTRADORES
 Route::middleware(['auth', 'role:admin'])->group(function () {
+
+// Vista de Incidencias reportadas
+    Route::get('/admin/incidencias', [DashboardController::class, 'incidencias']);
    // Dashboard y Historial
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/historial', [HistorialController::class, 'index']);
