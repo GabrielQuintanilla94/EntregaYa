@@ -19,8 +19,7 @@
 - [Instalación](#-instalación-y-despliegue-local)
 - [Uso](#-uso)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Contribuciones](#-contribuciones)
-- [Licencia](#-licencia)
+
 
 ---
 
