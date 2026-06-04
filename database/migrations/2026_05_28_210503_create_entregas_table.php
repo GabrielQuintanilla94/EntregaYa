@@ -23,8 +23,9 @@ return new class extends Migration
             $table->foreignId('vehiculo_id')->constrained('vehiculos')->onDelete('cascade');
             
             // Estado del paquete
-            $table->enum('estado', ['Pendiente', 'En camino', 'Entregado'])->default('Pendiente');
-            
+            // Estado del paquete actualizado
+            $table->enum('estado', ['Pendiente', 'En camino', 'Entregado', 'Reportado'])->default('Pendiente');
+
             $table->timestamps();
         });
     }

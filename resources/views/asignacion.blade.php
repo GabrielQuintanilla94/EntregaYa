@@ -95,14 +95,16 @@
                     <td>{{ $entrega->conductor->name }}</td>
                     <td>{{ $entrega->vehiculo->placa }}</td>
                     <td>
-                        @if($entrega->estado == 'Pendiente')
-                            <span style="background: #FEF3C7; color: #92400E; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Pendiente</span>
-                        @elseif($entrega->estado == 'En camino')
-                            <span style="background: #DBEAFE; color: #1E40AF; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">En Camino</span>
-                        @else
-                            <span style="background: #D1FAE5; color: #065F46; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Entregado</span>
-                        @endif
-                    </td>
+    @if($entrega->estado == 'Pendiente')
+        <span style="background: #FEF3C7; color: #92400E; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Pendiente</span>
+    @elseif($entrega->estado == 'En camino')
+        <span style="background: #DBEAFE; color: #1E40AF; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">En Camino</span>
+    @elseif($entrega->estado == 'Entregado')
+        <span style="background: #D1FAE5; color: #065F46; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Entregado</span>
+    @elseif($entrega->estado == 'Reportado')
+        <span style="background: #FEE2E2; color: #991B1B; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Reportado</span>
+    @endif
+</td>
                 </tr>
                 @empty
                 <tr>

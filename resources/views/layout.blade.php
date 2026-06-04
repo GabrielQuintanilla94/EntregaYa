@@ -32,7 +32,7 @@
              <li class="sidebar-item"><a href="/conductores">👥 Conductores</a></li>
              <li class="sidebar-item"><a href="/flotilla">🚚 Gestión de Flotilla</a></li>
              <li class="sidebar-item"><a href="/asignacion">🗺️ Asignación de Rutas</a></li>
-             <li class="sidebar-item"><a href="/historial">⚠️ Historial Reportes</a></li>
+             <li class="sidebar-item"><a href="/historial">📃​ Historial Entregas</a></li>
          @elseif(Auth::user()->rol === 'conductor')
              <li class="sidebar-item"><a href="/mis-entregas">📦 Mis Entregas</a></li>
              <li class="sidebar-item"><a href="/mi-historial">✅ Mi Historial</a></li>

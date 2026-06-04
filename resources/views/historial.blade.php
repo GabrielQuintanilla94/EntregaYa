@@ -10,7 +10,7 @@
 </style>
 
 <div>
-    <h1 class="page-title">Historial de Reportes</h1>
+    <h1 class="page-title">Historial de Entregas</h1>
     <p style="color: #6B7280;">Registro de todos los paquetes que ya fueron entregados exitosamente.</p>
 </div>
 

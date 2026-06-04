@@ -17,6 +17,13 @@ class ConductorController extends Controller
         // Buscamos a los usuarios que tengan el rol de conductor
         $conductores = User::where('rol', 'conductor')->get();
         return view('conductores', compact('conductores'));
+        // 1. Contamos las entregas del conductor logueado que tengan estado 'Reportado'
+    $totalIncidencias = Entrega::where('conductor_id', Auth::id())
+                               ->where('estado', 'Reportado')
+                               ->count();
+
+    // 2. Pasamos la variable a la vista 
+    return view('dashboard', compact('totalIncidencias'));
     }
 
     // ==========================================
@@ -28,21 +35,23 @@ class ConductorController extends Controller
     {
         $conductor_id = Auth::id();
 
-        // 1. CAMBIO AQUÍ: Renombramos a $entregas y agregamos ->with('vehiculo')
+        // 1. Paquetes pendientes o en camino
         $entregas = Entrega::with('vehiculo')
                            ->where('conductor_id', $conductor_id)
                            ->whereIn('estado', ['Pendiente', 'En camino'])
                            ->get();
 
-        // 2. Contamos cuántos ya entregó para la estadística
+        // 2. Paquetes entregados
         $entregasCompletadas = Entrega::where('conductor_id', $conductor_id)
                                       ->where('estado', 'Entregado')
                                       ->count();
 
-        // (Opcional) Si más adelante creas tabla de incidencias, aquí las cuentas
-        $incidenciasCount = 0;
+        // 3. ¡AQUÍ ESTÁ EL CAMBIO! Contamos las incidencias reales (estado 'Reportado')
+        $incidenciasCount = Entrega::where('conductor_id', $conductor_id)
+                                   ->where('estado', 'Reportado')
+                                   ->count();
 
-        // 3. CAMBIO AQUÍ: Pasamos 'entregas' al compact
+        // Pasamos las tres variables a la vista
         return view('mis-entregas', compact('entregas', 'entregasCompletadas', 'incidenciasCount'));
     }
 
@@ -100,20 +109,28 @@ class ConductorController extends Controller
 
         return view('reportar-incidencia', compact('entregas'));
     }
-    // NUEVO MÉTODO PARA GUARDAR LA INCIDENCIA
     public function guardarIncidencia(Request $request)
     {
-        // 1. (Opcional) Validamos que los datos vengan correctamente
+        // 1. Validamos que los datos vengan correctamente
         $request->validate([
             'tipo_incidencia' => 'required|string',
             'detalles' => 'required|string',
+            'entrega_id' => 'required' 
         ]);
 
-        // 2. Aquí iría el código para guardar en la base de datos.
-        // Ej: Incidencia::create([...]); 
-        // Como aún no tenemos esa tabla, pasaremos directo al paso 3.
+        // 2. Si la incidencia está asociada a un paquete
+        if ($request->entrega_id !== 'general') {
+            
+            // ¡AQUÍ ESTÁ EL CAMBIO! Usamos solo "Entrega::" en lugar de "App\Models\Entrega::"
+            $entrega = Entrega::where('conductor_id', Auth::id())
+                              ->findOrFail($request->entrega_id);
+            
+            // Cambiamos el estado y guardamos
+            $entrega->estado = 'Reportado';
+            $entrega->save();
+        }
 
-        // 3. Redirigimos a la pantalla principal con un mensaje de éxito
-        return redirect('/mis-entregas')->with('success', 'La incidencia ha sido reportada correctamente a la central.');
+        // 3. Redirigimos a la pantalla principal
+        return redirect('/mis-entregas')->with('success', 'La incidencia ha sido reportada y el estado del paquete ha sido actualizado.');
     }
 }
