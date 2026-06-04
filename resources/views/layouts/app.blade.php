@@ -8,12 +8,12 @@
 </head>
 <body class="bg-gray-100 font-sans antialiased h-screen flex flex-col">
 
-    <header class="bg-[#5c3d2e] text-white px-6 py-4 flex justify-between items-center shadow-md z-10">
+    <header class="bg-blue-800 text-white px-6 py-4 flex justify-between items-center shadow-md z-10">
         <div class="flex items-center space-x-3">
             <span class="text-2xl font-bold tracking-wider">EntregaYa</span>
         </div>
         <div class="flex items-center space-x-4">
-            <span class="text-sm bg-[#865c49] px-3 py-1 rounded-full">Panel de Control</span>
+            <span class="text-sm bg-blue-600 px-3 py-1 rounded-full">Panel de Control</span>
             <div class="text-right">
                 <p class="text-sm font-semibold">{{ Auth::user()->name ?? 'Usuario Conectado' }}</p>
             </div>

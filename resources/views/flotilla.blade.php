@@ -1,66 +1,57 @@
-@extends('layout')
+@extends('layouts.app')
+
+@section('title', 'Flotilla - EntregaYa')
 
 @section('content')
-<style>
-    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-    .page-title { font-size: 26px; font-weight: 800; color: #111827; }
-    .btn-primary { background-color: #2563EB; color: #FFFFFF; padding: 10px 20px; border-radius: 8px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; transition: background 0.3s; }
-    .btn-primary:hover { background-color: #1D4ED8; }
-    
-    /* Contenedor de Tabla */
-    .table-container { background-color: #FFFFFF; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); overflow: hidden; border: 1px solid #E5E7EB; }
-    .data-table { width: 100%; border-collapse: collapse; text-align: left; }
-    .data-table th { background-color: #F9FAFB; padding: 16px 24px; font-size: 13px; font-weight: 700; color: #374151; text-transform: uppercase; border-bottom: 1px solid #E5E7EB; }
-    .data-table td { padding: 16px 24px; font-size: 15px; color: #4B5563; border-bottom: 1px solid #E5E7EB; }
-    
-    /* Estados */
-    .badge { padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 600; display: inline-block; }
-    .badge-disponible { background-color: #D1FAE5; color: #065F46; }
-    .badge-ruta { background-color: #DBEAFE; color: #1E40AF; }
-    .badge-mantenimiento { background-color: #FEE2E2; color: #991B1B; }
-</style>
-
-<div class="page-header">
+<div class="mb-6 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
     <div>
-        <h1 class="page-title">Flotilla de Vehículos</h1>
-        <p style="color: #6B7280; margin-top: 4px;">Control, disponibilidad y datos de cada unidad de reparto.</p>
+        <h1 class="text-3xl font-bold text-gray-800">Flotilla de Vehículos</h1>
+        <p class="text-gray-500 mt-1">Control, disponibilidad y datos de cada unidad de reparto.</p>
     </div>
-    <a href="/flotilla/crear" class="btn-primary" style="display: inline-block; text-decoration: none;">+ Registrar Vehículo</a>
+    <a href="/flotilla/crear" class="bg-[#5c3d2e] hover:bg-[#4a3125] text-white px-5 py-2.5 rounded-lg text-sm font-bold transition shadow-sm inline-flex items-center gap-2">
+        + Registrar Vehículo
+    </a>
 </div>
 
-<div class="table-container">
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>Placa</th>
-                <th>Modelo / Vehículo</th>
-                <th>Capacidad de Carga</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($vehiculos as $vehiculo)
-            <tr>
-                <td style="font-weight: 600; color: #111827;">{{ $vehiculo->placa }}</td>
-                <td>{{ $vehiculo->modelo }}</td>
-                <td>{{ $vehiculo->capacidad }}</td>
-                <td>
-                    @if($vehiculo->estado == 'Disponible')
-                        <span class="badge badge-disponible">Disponible</span>
-                    @elseif($vehiculo->estado == 'En ruta')
-                        <span class="badge badge-ruta">En ruta</span>
-                    @else
-                        <span class="badge badge-mantenimiento">Mantenimiento</span>
-                    @endif
-                </td>
-                <td>
-                    <a href="#" style="color: #2563EB; text-decoration: none; margin-right: 12px; font-weight: 500;">Editar</a>
-                    <a href="#" style="color: #EF4444; text-decoration: none; font-weight: 500;">Eliminar</a>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-sm uppercase tracking-wider">
+                    <th class="p-4 font-semibold">Placa</th>
+                    <th class="p-4 font-semibold">Modelo / Vehículo</th>
+                    <th class="p-4 font-semibold">Cap. Carga</th>
+                    <th class="p-4 font-semibold">Estado</th>
+                    <th class="p-4 font-semibold text-right">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @forelse($vehiculos as $vehiculo)
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="p-4 font-bold text-gray-800">{{ $vehiculo->placa }}</td>
+                    <td class="p-4 text-gray-700">{{ $vehiculo->modelo }}</td>
+                    <td class="p-4 text-gray-600">{{ $vehiculo->capacidad }}</td>
+                    <td class="p-4">
+                        @if($vehiculo->estado == 'Disponible')
+                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">Disponible</span>
+                        @elseif($vehiculo->estado == 'En ruta')
+                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">En ruta</span>
+                        @else
+                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold">Mantenimiento</span>
+                        @endif
+                    </td>
+                    <td class="p-4 text-right space-x-3">
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium text-sm transition">Editar</a>
+                        <a href="#" class="text-red-600 hover:text-red-800 font-medium text-sm transition">Eliminar</a>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="5" class="p-8 text-center text-gray-500 bg-gray-50">No hay vehículos registrados.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 @endsection

@@ -13,6 +13,8 @@ class Entrega extends Model
     protected $fillable = [
         'descripcion', 
         'direccion', 
+        'nombre_contacto',   
+        'celular_contacto',  
         'conductor_id', 
         'vehiculo_id', 
         'estado'
