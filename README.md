@@ -1,58 +1,177 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚚 EntregaYa — Sistema de Gestión Logística y Rutas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
+![Google Maps](https://img.shields.io/badge/Google_Maps-4285F4?style=for-the-badge&logo=google-maps&logoColor=white)
 
-## About Laravel
+> Plataforma web integral para la gestión operativa de flotas y asignación de paquetería, que conecta en tiempo real a los administradores de central con los conductores en ruta.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Tabla de Contenidos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Descripción](#-descripción)
+- [Características](#-características-principales)
+- [Tecnologías](#️-tecnologías-y-arquitectura)
+- [Requisitos](#-requisitos-previos)
+- [Instalación](#-instalación-y-despliegue-local)
+- [Uso](#-uso)
+- [Estructura del Proyecto](#-estructura-del-proyecto)
+- [Contribuciones](#-contribuciones)
+- [Licencia](#-licencia)
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 📦 Descripción
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**EntregaYa** es una solución desarrollada en **Laravel 11** que optimiza el flujo de trabajo logístico entre administradores y conductores. Mediante un sistema de roles, cada perfil accede a su módulo dedicado: la central gestiona flotillas y asigna entregas, mientras que los conductores reciben sus rutas directamente en su móvil con integración a Google Maps.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## ✨ Características Principales
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+El sistema implementa control de acceso basado en roles (Middleware), dividiendo la aplicación en dos módulos:
 
-```bash
-composer require laravel/boost --dev
+### 👨‍💼 Módulo Administrador — Central
 
-php artisan boost:install
+| Función | Descripción |
+|---|---|
+| **Dashboard Operativo** | Métricas en tiempo real: conductores activos, vehículos disponibles, entregas en curso y completadas. |
+| **Gestión de Flotilla** | Registro y control de estado de vehículos y conductores. |
+| **Asignación Inteligente** | Creación de guías de entrega vinculando paquetes, clientes, conductores y vehículos. |
+| **Centro de Monitoreo** | Historial de entregas exitosas y panel de alertas para incidencias reportadas en calle. |
+
+### 🚙 Módulo Conductor — App Móvil Web
+
+| Función | Descripción |
+|---|---|
+| **Interfaz Responsiva** | Diseño 100% adaptado a dispositivos móviles con Tailwind CSS. |
+| **Panel de Entregas** | Visualización de paquetes pendientes asignados con datos de contacto del cliente. |
+| **Rutas Interactivas** | Integración con Google Maps para visualizar la ruta exacta tocando el destino. |
+| **Reporte de Incidencias** | Formulario para notificar averías, tráfico o problemas con clientes. |
+| **Actualización de Estado** | Marca paquetes como "Entregados" y actualiza la base de datos en tiempo real. |
+
+---
+
+## 🛠️ Tecnologías y Arquitectura
+
+```
+EntregaYa/
+├── Backend:    PHP 8 / Laravel 11
+├── Frontend:   Blade Templates + Tailwind CSS
+├── Base datos: MySQL (Eloquent ORM + Migraciones)
+├── Arquitectura: MVC (Modelo-Vista-Controlador)
+├── Seguridad:  Autenticación + Middlewares personalizados
+└── Integración: Google Maps API
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## ✅ Requisitos Previos
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Antes de instalar, asegúrate de tener lo siguiente:
 
-## Code of Conduct
+- **PHP** >= 8.0
+- **Composer** >= 2.x
+- **Node.js** >= 18.x y **npm**
+- **MySQL** >= 8.0
+- **Git**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 🚀 Instalación y Despliegue Local
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 1. Clonar el repositorio
 
-## License
+```bash
+git clone https://github.com/GabrielQuintanilla94/EntregaYa.git
+cd EntregaYa
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 2. Instalar dependencias
+
+```bash
+composer install
+npm install
+```
+
+### 3. Configurar variables de entorno
+
+```bash
+cp .env.example .env
+```
+
+Abre el archivo `.env` y configura tus credenciales:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=entregaya
+DB_USERNAME=tu_usuario
+DB_PASSWORD=tu_contraseña
+
+# Agrega tu clave de Google Maps
+GOOGLE_MAPS_API_KEY=tu_api_key
+```
+
+### 4. Generar la clave de la aplicación
+
+```bash
+php artisan key:generate
+```
+
+### 5. Ejecutar las migraciones
+
+```bash
+php artisan migrate
+```
+
+> **Opcional:** Si el proyecto incluye seeders para datos de prueba:
+> ```bash
+> php artisan db:seed
+> ```
+
+### 6. Compilar assets y levantar el servidor
+
+```bash
+npm run build
+php artisan serve
+```
+
+La aplicación estará disponible en **[http://localhost:8000](http://localhost:8000)**
+
+---
+
+## 📖 Uso
+
+Una vez levantado el servidor, puedes ingresar con los roles disponibles:
+
+| Rol | Acceso | Descripción |
+|---|---|---|
+| **Administrador** | `/admin/dashboard` | Gestión completa de flotilla, conductores y entregas. |
+| **Conductor** | `/conductor/panel` | Panel de rutas y actualización de estado de entregas. |
+
+---
+
+## 📁 Estructura del Proyecto
+
+```
+EntregaYa/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/     # Controladores por módulo
+│   │   └── Middleware/      # Control de acceso por roles
+│   └── Models/              # Modelos Eloquent
+├── database/
+│   └── migrations/          # Estructura de la base de datos
+├── resources/
+│   └── views/               # Plantillas Blade
+│       ├── admin/           # Vistas del módulo administrador
+│       └── conductor/       # Vistas del módulo conductor (responsivas)
+├── routes/
+│   └── web.php              # Definición de rutas
+└── public/                  # Assets compilados
+```
